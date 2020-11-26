@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geocoder/geocoder.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:good_air/views/main_page.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -10,8 +11,7 @@ class MapPage extends StatefulWidget {
 }
 
 class MapPageState extends State<MapPage> {
-  //LatLng center = MainPageState.userLocation;
-  LatLng center = LatLng(45.89056, 12.30806);
+  LatLng center = MainPageState.userLocation;
   GoogleMapController mapController;
   Set<Marker> markers = Set();
   var map;
@@ -26,9 +26,8 @@ class MapPageState extends State<MapPage> {
   }
 
   getUserLocation() async {
-    /*Location location = new Location();
-    LocationData locationData = await location.getLocation();
-    this.center = LatLng(locationData.latitude, locationData.longitude);
+    Position position = await Geolocator.getCurrentPosition();
+    this.center = LatLng(position.latitude, position.longitude);
     mapController.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(target: center, zoom: 11.0)));
     markers.clear();
@@ -36,7 +35,7 @@ class MapPageState extends State<MapPage> {
         markerId: MarkerId('SomeId'),
         position: center,
         infoWindow: InfoWindow(title: "Informazioni sull'aria")));
-    setState(() {});*/
+    setState(() {});
   }
 
   void findAddress(String address) async {

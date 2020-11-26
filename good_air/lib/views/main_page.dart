@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:good_air/views/profile_page.dart';
 import 'package:good_air/views/settings_page.dart';
 import 'package:good_air/views/trackme_page.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'home_page.dart';
 import 'map_page.dart';
@@ -51,10 +53,10 @@ class MainPageState extends State<MainPage> {
   }
 
   Future<void> loadUserPosition() async {
-    //Location location = new Location();
-    //LocationData locationData = await location.getLocation();
-    //userLocation = LatLng(locationData.latitude, locationData.longitude);
+    Position position = await Geolocator.getCurrentPosition();
+    userLocation = LatLng(position.latitude, position.longitude);
   }
+
   Widget build(BuildContext context) {
     loadUserPosition();
     return Scaffold(
