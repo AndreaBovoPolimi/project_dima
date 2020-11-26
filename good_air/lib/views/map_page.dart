@@ -85,7 +85,8 @@ class MapPageState extends State<MapPage> {
                     icon: Icon(Icons.search),
                     onPressed: () => {},
                   )),
-            )),
+            )
+            ),
       ),
       Positioned(
           top: size.height * 0.75,
