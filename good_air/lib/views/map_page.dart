@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:good_air/services/open_aq.dart';
+import 'package:good_air/views/components/air_information.dart';
 import 'package:good_air/views/main_page.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -25,36 +27,51 @@ class MapPageState extends State<MapPage> {
     getUserLocation();
   }
 
-  getUserLocation() async {
-    Position position = await Geolocator.getCurrentPosition();
-    this.center = LatLng(position.latitude, position.longitude);
-    mapController.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(target: center, zoom: 11.0)));
-    markers.clear();
-    markers.add(Marker(
-        markerId: MarkerId('SomeId'),
-        position: center,
-        infoWindow: InfoWindow(title: "Informazioni sull'aria")));
-    setState(() {});
+  void getUserLocation() async {
+    var response = await Geolocator.getCurrentPosition();
+    this.center = LatLng(response.latitude, response.longitude);
+    changeAddressState();
   }
 
-  void findAddress(String address) async {
+  void findAddressByString(String address) async {
     var response = await Geocoder.local.findAddressesFromQuery(address);
     this.center = LatLng(response.first.coordinates.latitude,
         response.first.coordinates.longitude);
+    changeAddressState();
+  }
+
+  void findAddressByCoordinates(Coordinates coordinates) async {
+    var response =
+        await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    this.center = LatLng(response.first.coordinates.latitude,
+        response.first.coordinates.longitude);
+    changeAddressState();
+  }
+
+  void changeAddressState() {
     mapController.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(target: center, zoom: 11.0)));
+        CameraPosition(target: center, zoom: 15.0)));
     markers.clear();
-    markers.add(Marker(
+    var marker = Marker(
         markerId: MarkerId('SomeId'),
         position: center,
-        infoWindow: InfoWindow(title: "Informazioni sull'aria")));
+        onTap: () {
+          showInformation();
+        });
+    markers.add(marker);
     searchBarController.clear();
     setState(() {});
   }
 
+  void showInformation() async {
+    var getLocation = await getLocations(center.latitude, center.longitude);
+    showDialog(
+        context: context, builder: (_) => new AirInformation(getLocation));
+  }
+
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+
     return Flexible(
         child: Stack(children: [
       GoogleMap(
@@ -63,9 +80,25 @@ class MapPageState extends State<MapPage> {
         markers: markers,
         initialCameraPosition: CameraPosition(
           target: center,
-          zoom: 11.0,
+          zoom: 15.0,
         ),
         zoomControlsEnabled: false,
+        myLocationEnabled: true,
+        myLocationButtonEnabled: true,
+        onTap: (value) {
+          FocusScopeNode currentFocus = FocusScope.of(context);
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+          }
+        },
+        onLongPress: (value) {
+          FocusScopeNode currentFocus = FocusScope.of(context);
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+          }
+          findAddressByCoordinates(
+              new Coordinates(value.latitude, value.longitude));
+        },
       ),
       Positioned(
         top: size.height * 0.006,
@@ -76,28 +109,18 @@ class MapPageState extends State<MapPage> {
                 borderRadius: BorderRadius.circular(10), color: Colors.white),
             child: TextField(
               controller: searchBarController,
-              onSubmitted: (value) => {findAddress(value)},
+              onSubmitted: (value) => {findAddressByString(value)},
               decoration: InputDecoration(
                   fillColor: Colors.white,
                   border: OutlineInputBorder(),
                   labelText: 'Enter address',
                   suffixIcon: IconButton(
                     icon: Icon(Icons.search),
-                    onPressed: () => {},
+                    onPressed: () =>
+                        {findAddressByString(searchBarController.value.text)},
                   )),
             )),
-      ),
-      Positioned(
-          top: size.height * 0.75,
-          left: size.width * 0.83,
-          child: FloatingActionButton(
-            onPressed: () {
-              getUserLocation();
-            },
-            child: Icon(Icons.my_location),
-            backgroundColor: Colors.blue,
-            heroTag: false,
-          ))
+      )
     ]));
   }
 }
