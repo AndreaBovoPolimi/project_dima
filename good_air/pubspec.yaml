@@ -43,6 +43,14 @@ dev_dependencies:
     sdk: flutter
   json_serializable: ^3.5.0
   build_runner: ^1.10.1
+  flutter_native_splash: ^0.1.9
+
+flutter_native_splash:
+  image: resources/goodair.png
+  color: "42a5f5"
+
+assets:
+  - resources/goodair.png
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

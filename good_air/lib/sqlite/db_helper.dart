@@ -47,8 +47,8 @@ class DbHelper {
 
   Future<List> getRecords() async {
     Database db = await this.db;
-    var result = await db
-        .rawQuery("SELECT * FROM $tblSearchStory order by $colDate ASC");
+    var result =
+        await db.rawQuery("SELECT * FROM $tblSearchStory order by $colId DESC");
     return result;
   }
 

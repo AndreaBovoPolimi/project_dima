@@ -89,17 +89,11 @@ class MapPageState extends State<MapPage> {
         zoomControlsEnabled: false,
         myLocationEnabled: true,
         myLocationButtonEnabled: false,
-        onTap: (value) {
-          FocusScopeNode currentFocus = FocusScope.of(context);
-          if (!currentFocus.hasPrimaryFocus) {
-            currentFocus.unfocus();
-          }
-        },
         onLongPress: (value) {
-          FocusScopeNode currentFocus = FocusScope.of(context);
-          if (!currentFocus.hasPrimaryFocus) {
-            currentFocus.unfocus();
-          }
+          //FocusScopeNode currentFocus = FocusScope.of(context);
+          //if (!currentFocus.hasPrimaryFocus) {
+          //  currentFocus.unfocus();
+          //}
           findAddressByCoordinates(
               new Coordinates(value.latitude, value.longitude));
         },

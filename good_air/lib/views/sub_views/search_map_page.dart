@@ -46,12 +46,13 @@ class SearchMapPageState extends State<SearchMapPage> {
         centerTitle: false,
         backgroundColor: Colors.white,
       ),
-      body: todoListItems(),
+      body: searchListItems(),
     );
   }
 
-  ListView todoListItems() {
+  ListView searchListItems() {
     return ListView.builder(
+      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       itemCount: count,
       itemBuilder: (BuildContext context, int position) {
         return Card(
