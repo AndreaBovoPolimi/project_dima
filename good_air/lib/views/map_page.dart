@@ -84,7 +84,7 @@ class MapPageState extends State<MapPage> {
         ),
         zoomControlsEnabled: false,
         myLocationEnabled: true,
-        myLocationButtonEnabled: true,
+        myLocationButtonEnabled: false,
         onTap: (value) {
           FocusScopeNode currentFocus = FocusScope.of(context);
           if (!currentFocus.hasPrimaryFocus) {
@@ -120,7 +120,18 @@ class MapPageState extends State<MapPage> {
                         {findAddressByString(searchBarController.value.text)},
                   )),
             )),
-      )
+      ),
+      Positioned(
+          bottom: 10,
+          right: 10,
+          child: FloatingActionButton(
+            onPressed: () {
+              getUserLocation();
+            },
+            child: Icon(Icons.my_location),
+            backgroundColor: Colors.blue,
+            heroTag: false,
+          ))
     ]));
   }
 }
