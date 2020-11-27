@@ -25,17 +25,21 @@ class MapPageState extends State<MapPage> {
     getUserLocation();
   }
 
-  getUserLocation() async {
-    Position position = await Geolocator.getCurrentPosition();
-    this.center = LatLng(position.latitude, position.longitude);
+  void moveCamera(LatLng coordinates) {
     mapController.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(target: center, zoom: 11.0)));
+        CameraPosition(target: coordinates, zoom: 11.0)));
     markers.clear();
     markers.add(Marker(
         markerId: MarkerId('SomeId'),
-        position: center,
+        position: coordinates,
         infoWindow: InfoWindow(title: "Informazioni sull'aria")));
     setState(() {});
+  }
+
+  getUserLocation() async {
+    Position position = await Geolocator.getCurrentPosition();
+    this.center = LatLng(position.latitude, position.longitude);
+    moveCamera(center);
   }
 
   void findAddress(String address) async {
@@ -60,6 +64,10 @@ class MapPageState extends State<MapPage> {
       GoogleMap(
         onMapCreated: onMapCreated,
         myLocationButtonEnabled: false,
+        onLongPress: (latlang) => {
+          this.center = LatLng(latlang.latitude, latlang.longitude),
+          moveCamera(center)
+        },
         mapToolbarEnabled: false,
         markers: markers,
         initialCameraPosition: CameraPosition(
