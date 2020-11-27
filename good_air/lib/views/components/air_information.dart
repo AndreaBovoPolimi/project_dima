@@ -31,7 +31,7 @@ class AirInformationState extends State<AirInformation> {
               ),
               Text(''),
               for (var item in getLocation.results.first.countsByMeasurement)
-                Text(item.parameter +
+                Text(item.parameter.toUpperCase() +
                     ' has a value as ' +
                     item.count.toString()),
             ],

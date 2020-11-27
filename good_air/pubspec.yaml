@@ -29,6 +29,9 @@ dependencies:
   search_map_place: ^0.3.0
   http: ^0.12.2
   json_annotation: ^3.1.0
+  sqflite: ^1.3.2+1
+  intl: ^0.15.7
+  path: any
 
 
   # The following adds the Cupertino Icons font to your application.
