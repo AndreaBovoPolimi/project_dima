@@ -59,6 +59,7 @@ class MapPageState extends State<MapPage> {
         child: Stack(children: [
       GoogleMap(
         onMapCreated: onMapCreated,
+        myLocationButtonEnabled: false,
         mapToolbarEnabled: false,
         markers: markers,
         initialCameraPosition: CameraPosition(
