@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:good_air/services/open_aq.dart';
+import 'package:good_air/services/aqicn.dart';
 import 'package:good_air/views/components/air_information.dart';
 import 'package:good_air/views/main_page.dart';
 import 'package:good_air/views/sub_views/search_map_page.dart';
@@ -69,8 +69,9 @@ class MapPageState extends State<MapPage> {
   }
 
   void showInformation() async {
-    var getLocation = await getLocations(center.latitude, center.longitude);
-    showDialog(context: context, builder: (_) => AirInformation(getLocation));
+    var getInfoFeedJson = await getInfoFeed(center.latitude, center.longitude);
+    showDialog(
+        context: context, builder: (_) => AirInformation(getInfoFeedJson));
   }
 
   Widget build(BuildContext context) {
