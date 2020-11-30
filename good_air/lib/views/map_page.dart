@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:good_air/models/info_map.dart';
 import 'package:good_air/services/aqicn.dart';
 import 'package:good_air/views/components/air_information.dart';
 import 'package:good_air/views/main_page.dart';
@@ -15,12 +16,44 @@ class MapPage extends StatefulWidget {
 
 class MapPageState extends State<MapPage> {
   LatLng center = MainPageState.userLocation;
+  InfoMap infoMap;
   GoogleMapController mapController;
   Set<Marker> markers = Set();
-  var map;
-  var searchBarController = TextEditingController();
   MapPageState() {
     getUserLocation();
+  }
+
+  Future getInfoMapAPI() async {
+    infoMap = await getInfoMap(center.latitude, center.longitude);
+    for (var item in infoMap.data) {
+      var marker = Marker(
+          icon: BitmapDescriptor.defaultMarkerWithHue(
+              getColorMarker(int.parse(item.aqi))),
+          markerId: MarkerId(item.uid.toString()),
+          position: LatLng(item.lat, item.lon),
+          onTap: () {
+            showInformation(LatLng(item.lat, item.lon));
+          });
+      markers.add(marker);
+      setState(() {});
+    }
+  }
+
+  double getColorMarker(int valAqi) {
+    if (valAqi >= 0 && valAqi <= 50) {
+      return BitmapDescriptor.hueGreen;
+    } else if (valAqi > 50 && valAqi <= 100) {
+      return BitmapDescriptor.hueYellow;
+    } else if (valAqi > 100 && valAqi <= 150) {
+      return BitmapDescriptor.hueOrange;
+    } else if (valAqi > 150 && valAqi <= 200) {
+      return BitmapDescriptor.hueRed;
+    } else if (valAqi > 200 && valAqi <= 300) {
+      return BitmapDescriptor.hueMagenta;
+    } else if (valAqi > 300) {
+      return BitmapDescriptor.hueViolet;
+    }
+    return BitmapDescriptor.hueGreen;
   }
 
   void onMapCreated(GoogleMapController controller) {
@@ -53,23 +86,25 @@ class MapPageState extends State<MapPage> {
     }
   }
 
-  void changeAddressState() {
+  Future changeAddressState() async {
     mapController.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(target: center, zoom: 12.0)));
+        CameraPosition(target: center, zoom: 7.0)));
     markers.clear();
     var marker = Marker(
-        markerId: MarkerId('SomeId'),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+        markerId: MarkerId(0.toString()),
         position: center,
         onTap: () {
-          showInformation();
+          showInformation(center);
         });
     markers.add(marker);
-    searchBarController.clear();
     setState(() {});
+    await getInfoMapAPI();
   }
 
-  void showInformation() async {
-    var getInfoFeedJson = await getInfoFeed(center.latitude, center.longitude);
+  void showInformation(LatLng position) async {
+    var getInfoFeedJson =
+        await getInfoFeed(position.latitude, position.longitude);
     showDialog(
         context: context, builder: (_) => AirInformation(getInfoFeedJson));
   }
