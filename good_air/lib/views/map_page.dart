@@ -25,18 +25,20 @@ class MapPageState extends State<MapPage> {
 
   Future getInfoMapAPI() async {
     infoMap = await getInfoMap(center.latitude, center.longitude);
-    for (var item in infoMap.data) {
-      var marker = Marker(
-          icon: BitmapDescriptor.defaultMarkerWithHue(
-              getColorMarker(int.parse(item.aqi))),
-          markerId: MarkerId(item.uid.toString()),
-          position: LatLng(item.lat, item.lon),
-          onTap: () {
-            showInformation(LatLng(item.lat, item.lon));
-          });
-      markers.add(marker);
-      setState(() {});
+    for (int i = 0; i < infoMap.data.length; i++) {
+      if (int.tryParse(infoMap.data[i].aqi) != null) {
+        var marker = Marker(
+            icon: BitmapDescriptor.defaultMarkerWithHue(
+                getColorMarker(int.parse(infoMap.data[i].aqi))),
+            markerId: MarkerId(infoMap.data[i].uid.toString()),
+            position: LatLng(infoMap.data[i].lat, infoMap.data[i].lon),
+            onTap: () {
+              showInformation(LatLng(infoMap.data[i].lat, infoMap.data[i].lon));
+            });
+        markers.add(marker);
+      }
     }
+    setState(() {});
   }
 
   double getColorMarker(int valAqi) {
@@ -88,7 +90,7 @@ class MapPageState extends State<MapPage> {
 
   Future changeAddressState() async {
     mapController.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(target: center, zoom: 7.0)));
+        CameraPosition(target: center, zoom: 9.0)));
     markers.clear();
     var marker = Marker(
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
