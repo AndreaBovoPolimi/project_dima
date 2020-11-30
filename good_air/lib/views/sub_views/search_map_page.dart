@@ -62,7 +62,7 @@ class SearchMapPageState extends State<SearchMapPage> {
             leading: Icon(Icons.adjust_outlined),
             title: Text(this.searchStories[position].address),
             onTap: () {
-              submitAddress(this.searchStories[position].address);
+              submitAndSaveAddress(this.searchStories[position].address);
             },
           ),
         );
@@ -77,6 +77,19 @@ class SearchMapPageState extends State<SearchMapPage> {
 
   void submitAddress(String address) {
     Navigator.pop(context, address);
+  }
+
+  void addAddress(String address) {
+    var itemToDelete = searchStories.firstWhere(
+        (element) => element.address == address,
+        orElse: () => null);
+    if (itemToDelete != null) {
+      helper.deleteRecord(itemToDelete.id);
+    }
+    if (searchStories.length > 5) {
+      helper.deleteRecord(searchStories.last.id);
+    }
+    helper.insertRecord(SearchStory(address, DateTime.now().toString()));
   }
 
   void getData() {
@@ -95,9 +108,5 @@ class SearchMapPageState extends State<SearchMapPage> {
         });
       });
     });
-  }
-
-  void addAddress(String address) {
-    helper.insertRecord(SearchStory(address, DateTime.now().toString()));
   }
 }

@@ -7,9 +7,10 @@ class ProfilePage extends StatefulWidget {
 }
 
 class ProfilePageState extends State<ProfilePage> {
-
   Widget build(BuildContext context) {
-    return Expanded(child: Container(color: Colors.deepOrange,));
-
+    return Expanded(
+        child: Container(
+      color: Colors.deepOrange,
+    ));
   }
 }

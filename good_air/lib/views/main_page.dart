@@ -56,10 +56,13 @@ class MainPageState extends State<MainPage> {
     return Scaffold(
       appBar: AppBar(
         brightness: Brightness.light,
-        title: Text(
-          _kBottomNavBarItems[_currentTabIndex].label,
-          style: TextStyle(color: Colors.blueAccent),
-        ),
+        title: Row(children: [
+          Text('Air', style: TextStyle(color: Colors.blueGrey)),
+          Text(
+            _kBottomNavBarItems[_currentTabIndex].label,
+            style: TextStyle(color: Colors.blueAccent),
+          )
+        ], mainAxisAlignment: MainAxisAlignment.center),
         centerTitle: true,
         backgroundColor: Colors.white,
       ),
