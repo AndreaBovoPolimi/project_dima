@@ -24,7 +24,7 @@ class MapPageState extends State<MapPage> {
   }
 
   Future getInfoMapAPI() async {
-    infoMap = await getInfoMap(center.latitude, center.longitude);
+    infoMap = await getInfoMap(await mapController.getVisibleRegion());
     for (int i = 0; i < infoMap.data.length; i++) {
       if (int.tryParse(infoMap.data[i].aqi) != null) {
         var marker = Marker(
@@ -90,7 +90,7 @@ class MapPageState extends State<MapPage> {
 
   Future changeAddressState() async {
     mapController.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(target: center, zoom: 9.0)));
+        CameraPosition(target: center, zoom: 8.0)));
     markers.clear();
     var marker = Marker(
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
@@ -118,11 +118,12 @@ class MapPageState extends State<MapPage> {
         child: Stack(children: [
       GoogleMap(
         onMapCreated: onMapCreated,
+        minMaxZoomPreference: MinMaxZoomPreference(8, 18),
         mapToolbarEnabled: false,
         markers: markers,
         initialCameraPosition: CameraPosition(
           target: center,
-          zoom: 11.0,
+          zoom: 8.0,
         ),
         zoomControlsEnabled: false,
         myLocationEnabled: true,
@@ -134,6 +135,10 @@ class MapPageState extends State<MapPage> {
           //}
           findAddressByCoordinates(
               new Coordinates(value.latitude, value.longitude));
+        },
+        onCameraIdle: () async {
+          markers.clear();
+          await getInfoMapAPI();
         },
       ),
       Positioned(
