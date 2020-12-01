@@ -33,6 +33,7 @@ class NewsPageState extends State<NewsPage> {
                 imageUrl: news.news[index].urlToImage,
                 title: news.news[index].title,
                 description: news.news[index].description,
+                url: news.news[index].url,
               );
             }
             ),
