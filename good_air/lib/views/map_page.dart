@@ -118,7 +118,7 @@ class MapPageState extends State<MapPage> {
         child: Stack(children: [
       GoogleMap(
         onMapCreated: onMapCreated,
-        minMaxZoomPreference: MinMaxZoomPreference(8, 18),
+        minMaxZoomPreference: MinMaxZoomPreference(7, 18),
         mapToolbarEnabled: false,
         markers: markers,
         initialCameraPosition: CameraPosition(
@@ -137,7 +137,6 @@ class MapPageState extends State<MapPage> {
               new Coordinates(value.latitude, value.longitude));
         },
         onCameraIdle: () async {
-          markers.clear();
           await getInfoMapAPI();
         },
       ),

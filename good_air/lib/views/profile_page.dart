@@ -11,6 +11,17 @@ class ProfilePageState extends State<ProfilePage> {
     return Expanded(
         child: Container(
       color: Colors.deepOrange,
+      child: Positioned(
+          bottom: 10,
+          right: 10,
+          child: FloatingActionButton(
+            onPressed: () {
+              //
+            },
+            child: Icon(Icons.settings),
+            backgroundColor: Colors.blue,
+            heroTag: "settings",
+          )),
     ));
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:good_air/views/forecast_page.dart';
 import 'package:good_air/views/profile_page.dart';
+import 'package:good_air/views/ranking_page.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'news_page.dart';
@@ -14,7 +16,6 @@ class MainPage extends StatefulWidget {
 
 class MainPageState extends State<MainPage> {
   int _currentTabIndex = 0;
-  MapPage map;
   static var userLocation;
 
   Future<void> loadUserPosition() async {
@@ -24,21 +25,26 @@ class MainPageState extends State<MainPage> {
 
   MainPageState() {
     loadUserPosition();
-    map = MapPage();
   }
 
   @override
   Widget build(BuildContext context) {
     final _kTabPages = <Widget>[
       NewsPage(),
-      map,
+      RankingPage(),
+      MapPage(),
+      ForecastPage(),
       ProfilePage(),
     ];
     final _kBottomNavBarItems = <BottomNavigationBarItem>[
       BottomNavigationBarItem(
           icon: Icon(Icons.format_align_left_outlined), label: 'News'),
       BottomNavigationBarItem(
+          icon: Icon(Icons.star_border_outlined), label: 'Ranking'),
+      BottomNavigationBarItem(
           icon: Icon(Icons.outlined_flag_outlined), label: 'Maps'),
+      BottomNavigationBarItem(
+          icon: Icon(Icons.wallpaper_outlined), label: 'Forecast'),
       BottomNavigationBarItem(
           icon: Icon(Icons.account_circle_outlined), label: 'Profile'),
     ];
@@ -66,9 +72,7 @@ class MainPageState extends State<MainPage> {
         centerTitle: true,
         backgroundColor: Colors.white,
       ),
-      body: Column(children: [
-        _kTabPages[_currentTabIndex],
-      ]),
+      body: IndexedStack(children: _kTabPages, index: _currentTabIndex),
       bottomNavigationBar: bottomNavBar,
     );
   }
