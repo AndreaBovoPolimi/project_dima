@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:good_air/models/info_feed.dart';
+import 'package:good_air/views/components/line_chart.dart';
+import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 class AirInformation extends StatefulWidget {
   InfoFeed infoFeed;
@@ -22,34 +24,32 @@ class AirInformationState extends State<AirInformation> {
           title: Text('This place is not provided by our system, sorry!'));
     }
     return AlertDialog(
-        title: Text(infoFeed.data.city.name),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
+        title: Icon(Icons.poll, size: 50, color: Colors.blue,),
         content: SingleChildScrollView(
           child: ListBody(
             children: <Widget>[
-              Text(
-                'These are the air informations:',
-              ),
-              Text(''),
+              Text(infoFeed.data.city.name, style: TextStyle(fontSize: 18, color: Colors.blue, fontWeight: FontWeight.bold),),
               if (infoFeed.data.iaqi.co != null)
-                Text('CO is ' + infoFeed.data.iaqi.co.v.toString()),
+                LineChart(value: infoFeed.data.iaqi.co.v, min: 0,max: 1,interval: 0.2,color: Colors.red, name: "CO  ",),
               if (infoFeed.data.iaqi.dew != null)
-                Text('DEW is ' + infoFeed.data.iaqi.dew.v.toString()),
+                LineChart(value: infoFeed.data.iaqi.dew.v, min: 0,max: 100,interval: 20,color: Colors.yellow, name: "DEW ",),
               if (infoFeed.data.iaqi.h != null)
-                Text('H is ' + infoFeed.data.iaqi.h.v.toString()),
+                LineChart(value: infoFeed.data.iaqi.h.v, min: 0,max: 100,interval: 20,color: Colors.orange, name: "H   ",),
               if (infoFeed.data.iaqi.no2 != null)
-                Text('NO2 is ' + infoFeed.data.iaqi.no2.v.toString()),
+                LineChart(value: infoFeed.data.iaqi.no2.v, min: 0,max: 100,interval: 20,color: Colors.amber, name: "NO2 ",),
               if (infoFeed.data.iaqi.o3 != null)
-                Text('O3 is ' + infoFeed.data.iaqi.o3.v.toString()),
+                LineChart(value: infoFeed.data.iaqi.o3.v, min: 0,max: 10,interval: 20,color: Colors.deepPurple, name: "O3  ",),
               if (infoFeed.data.iaqi.p != null)
-                Text('P is ' + infoFeed.data.iaqi.p.v.toString()),
+                LineChart(value: infoFeed.data.iaqi.p.v, min: 0,max: 2000,interval: 500,color: Colors.greenAccent, name: "P   ",),
               if (infoFeed.data.iaqi.pm10 != null)
-                Text('Pm10 is ' + infoFeed.data.iaqi.pm10.v.toString()),
+                LineChart(value: infoFeed.data.iaqi.pm10.v.toDouble(), min: 0,max: 100,interval: 20,color: Colors.limeAccent, name: "Pm10",),
               if (infoFeed.data.iaqi.so2 != null)
-                Text('SO2 is ' + infoFeed.data.iaqi.so2.v.toString()),
+               LineChart(value: infoFeed.data.iaqi.so2.v, min: 0,max: 10,interval: 1,color: Colors.pink, name: "SO2 ",),
               if (infoFeed.data.iaqi.t != null)
-                Text('T is ' + infoFeed.data.iaqi.t.v.toString()),
+                LineChart(value: infoFeed.data.iaqi.t.v, min: 0,max: 10,interval: 1,color: Colors.indigo, name: "T   ",),
               if (infoFeed.data.iaqi.w != null)
-                Text('W is ' + infoFeed.data.iaqi.w.v.toString()),
+                LineChart(value: infoFeed.data.iaqi.w.v, min: 0,max: 1,interval: 0.5,color: Colors.blueAccent, name: "W   ",),
             ],
           ),
         ));
