@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ForecastPage extends StatefulWidget {
+  const ForecastPage({Key key}) : super(key: key);
   State<ForecastPage> createState() {
     return ForecastPageState();
   }
@@ -26,13 +27,17 @@ class ForecastPageState extends State<ForecastPage> {
     }
 
     return Stack(children: [
-      ListView.builder(
-          itemCount: 20,
-          padding: const EdgeInsets.all(16.0),
-          itemBuilder: (BuildContext context, int i) {
-            if (i.isOdd) return Divider();
-            return _buildRow(i);
-          }),
+      Expanded(
+          child: SizedBox(
+              height: MediaQuery.of(context).size.height,
+              //width: MediaQuery.of(context).size.width,
+              child: ListView.builder(
+                  itemCount: 20,
+                  padding: const EdgeInsets.all(16.0),
+                  itemBuilder: (BuildContext context, int i) {
+                    if (i.isOdd) return Divider();
+                    return _buildRow(i);
+                  }))),
       Positioned(
           bottom: 10,
           right: 10,
@@ -42,7 +47,7 @@ class ForecastPageState extends State<ForecastPage> {
             },
             child: Icon(Icons.add),
             backgroundColor: Colors.blue,
-            heroTag: "settings",
+            heroTag: "addForecast",
           )),
     ]);
   }

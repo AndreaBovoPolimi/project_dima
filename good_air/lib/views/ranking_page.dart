@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class RankingPage extends StatefulWidget {
+  const RankingPage({Key key}) : super(key: key);
   State<RankingPage> createState() {
     return RankingPageState();
   }

@@ -9,6 +9,7 @@ import 'package:good_air/views/sub_views/search_map_page.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapPage extends StatefulWidget {
+  const MapPage({Key key}) : super(key: key);
   State<MapPage> createState() {
     return MapPageState();
   }

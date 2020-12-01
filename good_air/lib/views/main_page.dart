@@ -30,12 +30,13 @@ class MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     final _kTabPages = <Widget>[
-      NewsPage(),
-      RankingPage(),
-      MapPage(),
-      ForecastPage(),
-      ProfilePage(),
+      NewsPage(key: PageStorageKey('News')),
+      RankingPage(key: PageStorageKey('Ranking')),
+      MapPage(key: PageStorageKey('Map')),
+      ForecastPage(key: PageStorageKey('Forecast')),
+      ProfilePage(key: PageStorageKey('Profile')),
     ];
+
     final _kBottomNavBarItems = <BottomNavigationBarItem>[
       BottomNavigationBarItem(
           icon: Icon(Icons.format_align_left_outlined), label: 'News'),
@@ -48,6 +49,7 @@ class MainPageState extends State<MainPage> {
       BottomNavigationBarItem(
           icon: Icon(Icons.account_circle_outlined), label: 'Profile'),
     ];
+
     assert(_kTabPages.length == _kBottomNavBarItems.length);
     final bottomNavBar = BottomNavigationBar(
       items: _kBottomNavBarItems,
@@ -72,7 +74,10 @@ class MainPageState extends State<MainPage> {
         centerTitle: true,
         backgroundColor: Colors.white,
       ),
-      body: IndexedStack(children: _kTabPages, index: _currentTabIndex),
+      body: IndexedStack(
+        index: _currentTabIndex,
+        children: _kTabPages,
+      ),
       bottomNavigationBar: bottomNavBar,
     );
   }
