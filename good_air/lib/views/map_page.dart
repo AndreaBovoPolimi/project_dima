@@ -150,7 +150,7 @@ class MapPageState extends State<MapPage> {
             },
             child: Icon(Icons.my_location),
             backgroundColor: Colors.blue,
-            heroTag: "position",
+            heroTag: 'position',
           )),
       Positioned(
           bottom: 80,

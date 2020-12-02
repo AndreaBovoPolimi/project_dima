@@ -1,14 +1,14 @@
-class SearchStory {
+class SearchStoryEntity {
   int _id;
   String _address;
   String _date;
 
-  SearchStory(String _address, String _date) {
+  SearchStoryEntity(String _address, String _date) {
     this._address = _address;
     this._date = _date;
   }
 
-  SearchStory.withId(this._id, this._address, this._date);
+  SearchStoryEntity.withId(this._id, this._address, this._date);
   int get id => _id;
   String get address => _address;
   String get date => _date;
@@ -35,7 +35,7 @@ class SearchStory {
     return map;
   }
 
-  SearchStory.fromObject(dynamic o) {
+  SearchStoryEntity.fromObject(dynamic o) {
     this._id = o["id"];
     this._address = o["address"];
     this._date = o["date"];

@@ -1,30 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:geocoder/geocoder.dart';
 import 'package:good_air/models/microsoft_fuzzy.dart';
 import 'package:good_air/services/microsoft_maps.dart';
 import 'package:good_air/sqlite/db_helper.dart';
+import 'package:good_air/sqlite/entities/forecast.dart';
 import 'package:good_air/sqlite/entities/search_story.dart';
 
-class SearchMapPage extends StatefulWidget {
-  State<SearchMapPage> createState() {
-    return SearchMapPageState();
+class SearchForecastPage extends StatefulWidget {
+  List<ForecastEntity> forecastList;
+  SearchForecastPage(List<ForecastEntity> forecastList) {
+    this.forecastList = forecastList;
+  }
+
+  State<SearchForecastPage> createState() {
+    return SearchForecastPageState(forecastList);
   }
 }
 
-class SearchMapPageState extends State<SearchMapPage> {
+class SearchForecastPageState extends State<SearchForecastPage> {
   TextEditingController titleText;
   DbHelper helper = DbHelper();
   List<SearchStoryEntity> searchStories;
+  List<ForecastEntity> forecastList;
   MicrosoftFuzzy listFuzzy;
   int count = 0;
   bool _visible = true;
+
+  SearchForecastPageState(List<ForecastEntity> forecastList) {
+    this.forecastList = forecastList;
+  }
 
   Widget build(BuildContext context) {
     if (searchStories == null) {
       searchStories = List<SearchStoryEntity>();
       getData();
     }
-
-    var listView = searchListItems();
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -44,7 +54,7 @@ class SearchMapPageState extends State<SearchMapPage> {
               disabledBorder: InputBorder.none,
               contentPadding:
                   EdgeInsets.only(left: -15, bottom: 11, top: 11, right: 15),
-              hintText: 'Search...'),
+              hintText: 'Add location...'),
           controller: titleText,
           style: TextStyle(color: Colors.blueGrey),
           onChanged: (value) async => {await _onChangedTextField(value)},
@@ -52,7 +62,7 @@ class SearchMapPageState extends State<SearchMapPage> {
         centerTitle: false,
         backgroundColor: Colors.white,
       ),
-      body: listView,
+      body: searchListItems(),
     );
   }
 
@@ -81,7 +91,7 @@ class SearchMapPageState extends State<SearchMapPage> {
                   leading: Icon(Icons.location_history_outlined),
                   title: Text(this.searchStories[position].address),
                   onTap: () {
-                    submitAndSaveAddress(this.searchStories[position].address);
+                    submitForecast(this.searchStories[position].address);
                   },
                 ),
               );
@@ -98,11 +108,11 @@ class SearchMapPageState extends State<SearchMapPage> {
                 color: Colors.white,
                 elevation: 2.0,
                 child: ListTile(
-                  leading: Icon(Icons.location_on_outlined),
+                  leading: Icon(Icons.add_location_outlined),
                   title:
                       Text(listFuzzy.results[position].address.freeformAddress),
                   onTap: () {
-                    submitAndSaveAddress(
+                    submitForecast(
                         listFuzzy.results[position].address.freeformAddress);
                   },
                 ),
@@ -112,27 +122,27 @@ class SearchMapPageState extends State<SearchMapPage> {
     }
   }
 
-  void submitAndSaveAddress(String address) {
-    addAddress(address);
-    submitAddress(address);
+  Future submitForecast(String address) async {
+    await addAddress(address);
+    submitPage();
   }
 
-  void submitAddress(String address) {
-    Navigator.pop(context, address);
+  void submitPage() {
+    Navigator.pop(context);
   }
 
-  void addAddress(String address) {
-    var itemToDelete = searchStories.firstWhere(
+  Future addAddress(String address) async {
+    var itemToDelete = forecastList.firstWhere(
         (element) => element.address == address,
         orElse: () => null);
     if (itemToDelete != null) {
-      helper.deleteSearchStory(itemToDelete.id);
+      return;
     }
-    if (searchStories.length > 5) {
-      helper.deleteSearchStory(searchStories.last.id);
-    }
-    helper.insertSearchStory(
-        SearchStoryEntity(address, DateTime.now().toString()));
+    var response = await Geocoder.local.findAddressesFromQuery(address);
+    await helper.insertForecast(ForecastEntity(
+        address,
+        response.first.coordinates.latitude,
+        response.first.coordinates.longitude));
   }
 
   void getData() {

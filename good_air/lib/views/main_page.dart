@@ -31,7 +31,7 @@ class MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     final _kTabPages = <Widget>[
       NewsPage(key: PageStorageKey('News')),
-      RankingPage(key: PageStorageKey('Ranking')),
+      //RankingPage(key: PageStorageKey('Ranking')),
       MapPage(key: PageStorageKey('Map')),
       ForecastPage(key: PageStorageKey('Forecast')),
       ProfilePage(key: PageStorageKey('Profile')),
@@ -40,8 +40,8 @@ class MainPageState extends State<MainPage> {
     final _kBottomNavBarItems = <BottomNavigationBarItem>[
       BottomNavigationBarItem(
           icon: Icon(Icons.format_align_left_outlined), label: 'News'),
-      BottomNavigationBarItem(
-          icon: Icon(Icons.star_border_outlined), label: 'Ranking'),
+      //BottomNavigationBarItem(
+      //    icon: Icon(Icons.star_border_outlined), label: 'Ranking'),
       BottomNavigationBarItem(
           icon: Icon(Icons.outlined_flag_outlined), label: 'Maps'),
       BottomNavigationBarItem(
