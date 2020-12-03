@@ -5,6 +5,7 @@ import 'package:good_air/models/info_feed.dart';
 import 'package:good_air/services/aqicn.dart';
 import 'package:good_air/sqlite/db_helper.dart';
 import 'package:good_air/sqlite/entities/forecast.dart';
+import 'package:good_air/views/sub_views/forecast_subpage.dart';
 import 'package:good_air/views/sub_views/search_forecast_page.dart';
 
 class ForecastPage extends StatefulWidget {
@@ -102,9 +103,9 @@ class ForecastPageSecondState extends State<ForecastPageSecond> {
         ]),
         //subtitle: Text(''),
         trailing: Icon(Icons.arrow_forward_outlined),
-        /*onTap: () {
-          Navigator.push(context, route);
-        },*/
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => ForecastSubPage(getColorAqi(infoFeedPosition.data.aqi))));
+        },
       );
     }
 
@@ -140,9 +141,9 @@ class ForecastPageSecondState extends State<ForecastPageSecond> {
         ),
         //subtitle: Text('${forecastList[idx].lat}, ${forecastList[idx].lng}'),
         trailing: Icon(Icons.arrow_forward_outlined),
-        /*onTap: () {
-          Navigator.push(context, route);
-        },*/
+        onTap: () {
+           Navigator.push(context, MaterialPageRoute(builder: (context) => ForecastSubPage(getColorAqi(infoFeedList[idx].data.aqi))));
+        },
       );
     }
 
