@@ -123,26 +123,25 @@ class SearchForecastPageState extends State<SearchForecastPage> {
   }
 
   Future submitForecast(String address) async {
-    await addAddress(address);
-    submitPage();
+    submitPage(await addAddress(address));
   }
 
-  void submitPage() {
-    Navigator.pop(context);
+  void submitPage(ForecastEntity forecast) {
+    Navigator.pop(context, forecast);
   }
 
-  Future addAddress(String address) async {
+  Future<ForecastEntity> addAddress(String address) async {
     var itemToDelete = forecastList.firstWhere(
         (element) => element.address == address,
         orElse: () => null);
     if (itemToDelete != null) {
-      return;
+      return null;
     }
     var response = await Geocoder.local.findAddressesFromQuery(address);
-    await helper.insertForecast(ForecastEntity(
-        address,
-        response.first.coordinates.latitude,
-        response.first.coordinates.longitude));
+    var forecast = ForecastEntity(address, response.first.coordinates.latitude,
+        response.first.coordinates.longitude);
+    await helper.insertForecast(forecast);
+    return forecast;
   }
 
   void getData() {

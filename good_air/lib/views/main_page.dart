@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:good_air/views/forecast_page.dart';
 import 'package:good_air/views/profile_page.dart';
-import 'package:good_air/views/ranking_page.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'news_page.dart';
@@ -31,7 +30,6 @@ class MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     final _kTabPages = <Widget>[
       NewsPage(key: PageStorageKey('News')),
-      //RankingPage(key: PageStorageKey('Ranking')),
       MapPage(key: PageStorageKey('Map')),
       ForecastPage(key: PageStorageKey('Forecast')),
       ProfilePage(key: PageStorageKey('Profile')),
@@ -40,8 +38,6 @@ class MainPageState extends State<MainPage> {
     final _kBottomNavBarItems = <BottomNavigationBarItem>[
       BottomNavigationBarItem(
           icon: Icon(Icons.format_align_left_outlined), label: 'News'),
-      //BottomNavigationBarItem(
-      //    icon: Icon(Icons.star_border_outlined), label: 'Ranking'),
       BottomNavigationBarItem(
           icon: Icon(Icons.outlined_flag_outlined), label: 'Maps'),
       BottomNavigationBarItem(

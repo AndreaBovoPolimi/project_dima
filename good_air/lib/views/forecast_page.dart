@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:good_air/helpers/color_aqi.dart';
 import 'package:good_air/models/info_feed.dart';
+import 'package:good_air/services/aqicn.dart';
 import 'package:good_air/sqlite/db_helper.dart';
 import 'package:good_air/sqlite/entities/forecast.dart';
 import 'package:good_air/views/sub_views/search_forecast_page.dart';
@@ -12,22 +15,80 @@ class ForecastPage extends StatefulWidget {
 }
 
 class ForecastPageState extends State<ForecastPage> {
+  Widget _body = Center(child: CircularProgressIndicator()); // Default Body
+  DbHelper helper = DbHelper();
+
+  ForecastPageState() {
+    _goToSecondPart();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _body;
+  }
+
+  Future _goToSecondPart() async {
+    int count;
+    InfoFeed infoFeedPosition;
+    List<InfoFeed> infoFeedList = List<InfoFeed>();
+    List<ForecastEntity> forecastList = List<ForecastEntity>();
+    var todosFuture = await helper.getForecast();
+    count = todosFuture.length;
+    for (int i = 0; i < count; i++) {
+      forecastList.add(ForecastEntity.fromObject(todosFuture[i]));
+      infoFeedList.add(await getInfoFeed(
+          ForecastEntity.fromObject(todosFuture[i]).lat,
+          ForecastEntity.fromObject(todosFuture[i]).lng));
+    }
+    var position = await Geolocator.getCurrentPosition();
+    infoFeedPosition = await getInfoFeed(position.latitude, position.longitude);
+    setState(() => _body =
+        ForecastPageSecond(infoFeedPosition, infoFeedList, forecastList));
+  }
+}
+
+class ForecastPageSecond extends StatefulWidget {
+  List<InfoFeed> infoFeedList;
+  List<ForecastEntity> forecastList;
+  InfoFeed infoFeedPosition;
+
+  ForecastPageSecond(InfoFeed _infoFeedPosition, List<InfoFeed> _infoFeedList,
+      List<ForecastEntity> _forecastList) {
+    infoFeedList = _infoFeedList;
+    infoFeedPosition = _infoFeedPosition;
+    forecastList = _forecastList;
+  }
+  State<ForecastPageSecond> createState() {
+    return ForecastPageSecondState(
+        infoFeedPosition, infoFeedList, forecastList);
+  }
+}
+
+class ForecastPageSecondState extends State<ForecastPageSecond> {
   DbHelper helper = DbHelper();
   List<ForecastEntity> forecastList;
   InfoFeed infoFeedPosition;
   List<InfoFeed> infoFeedList;
-  int count = 0;
+  int count;
+  bool hasToUpdate = false;
+
+  ForecastPageSecondState(InfoFeed _infoFeedPosition,
+      List<InfoFeed> _infoFeedList, List<ForecastEntity> _forecastList) {
+    infoFeedList = _infoFeedList;
+    infoFeedPosition = _infoFeedPosition;
+    forecastList = _forecastList;
+    count = _forecastList.length;
+  }
 
   Widget build(BuildContext context) {
-    if (forecastList == null) {
-      forecastList = List<ForecastEntity>();
-      getData();
-    }
-
+    /*if (hasToUpdate) {
+      return ForecastPage();
+    }*/
     Widget _buildRowOnLocation() {
       return ListTile(
         leading: CircleAvatar(
-          child: Text('1'),
+          child: Text('${infoFeedPosition.data.aqi}'),
+          backgroundColor: getColorAqi(infoFeedPosition.data.aqi),
         ),
         title: Row(children: [
           Text(
@@ -36,7 +97,7 @@ class ForecastPageState extends State<ForecastPage> {
           ),
           Icon(
             Icons.location_on_outlined,
-            color: Colors.blueGrey,
+            color: getColorAqi(infoFeedPosition.data.aqi),
           )
         ]),
         //subtitle: Text(''),
@@ -47,16 +108,37 @@ class ForecastPageState extends State<ForecastPage> {
       );
     }
 
+    Widget _buildRowOnUpdate() {
+      return Opacity(
+          opacity: 0.5,
+          child: ListTile(
+            leading: CircleAvatar(
+              child: Text('?'),
+              backgroundColor: Colors.blue,
+            ),
+            title: Text(
+              '${forecastList[forecastList.length - 1].address}',
+              style: TextStyle(fontSize: 17.0),
+            ),
+            //subtitle: Text(''),
+            trailing: CircularProgressIndicator(),
+            /*onTap: () {
+          Navigator.push(context, route);
+        },*/
+          ));
+    }
+
     Widget _buildRow(int idx) {
       return ListTile(
         leading: CircleAvatar(
-          child: Text('${forecastList[idx].id}'),
+          child: Text('${infoFeedList[idx].data.aqi}'),
+          backgroundColor: getColorAqi(infoFeedList[idx].data.aqi),
         ),
         title: Text(
           '${forecastList[idx].address}',
           style: TextStyle(fontSize: 17.0),
         ),
-        subtitle: Text('${forecastList[idx].lat}, ${forecastList[idx].lng}'),
+        //subtitle: Text('${forecastList[idx].lat}, ${forecastList[idx].lng}'),
         trailing: Icon(Icons.arrow_forward_outlined),
         /*onTap: () {
           Navigator.push(context, route);
@@ -76,12 +158,27 @@ class ForecastPageState extends State<ForecastPage> {
                     if (i == 0) {
                       return _buildRowOnLocation();
                     }
+                    if (hasToUpdate == true && i == forecastList.length) {
+                      return Dismissible(
+                          key: UniqueKey(),
+                          onDismissed: (DismissDirection direction) async {
+                            await _removeForecast(i - 1);
+                            setState(() {});
+                          },
+                          background: Container(
+                            color: Colors.red,
+                            child: Icon(Icons.delete_outline),
+                            alignment: Alignment.centerLeft,
+                          ),
+                          child: _buildRowOnUpdate());
+                    }
                     return Dismissible(
                       key: UniqueKey(),
                       onDismissed: (DismissDirection direction) async {
                         await _removeForecast(i - 1);
                         setState(() {
-                          getData();
+                          forecastList.removeAt(i - 1);
+                          infoFeedList.removeAt(i - 1);
                         });
                       },
                       background: Container(
@@ -107,30 +204,23 @@ class ForecastPageState extends State<ForecastPage> {
   }
 
   void _awaitFinishNextScreen() async {
-    await Navigator.push(
+    var _return = await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => SearchForecastPage(forecastList)),
     );
-    setState(() {
-      getData();
-    });
+    if (_return != null) {
+      forecastList.add(_return);
+      _addNewInfoFeed(_return);
+      setState(() {
+        hasToUpdate = true;
+      });
+    }
   }
 
-  void getData() {
-    final dbFuture = helper.initializeDb();
-    dbFuture.then((result) {
-      final todosFuture = helper.getForecast();
-      todosFuture.then((result) {
-        List<ForecastEntity> _forecastList = List<ForecastEntity>();
-        count = result.length;
-        for (int i = 0; i < count; i++) {
-          _forecastList.add(ForecastEntity.fromObject(result[i]));
-        }
-        setState(() {
-          forecastList = _forecastList;
-          count = count;
-        });
-      });
+  Future _addNewInfoFeed(ForecastEntity forecast) async {
+    infoFeedList.add(await getInfoFeed(forecast.lat, forecast.lng));
+    setState(() {
+      hasToUpdate = false;
     });
   }
 

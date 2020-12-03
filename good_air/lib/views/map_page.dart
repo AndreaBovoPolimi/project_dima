@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:good_air/helpers/color_aqi.dart';
 import 'package:good_air/models/info_map.dart';
 import 'package:good_air/services/aqicn.dart';
 import 'package:good_air/views/components/air_information.dart';
@@ -30,7 +31,7 @@ class MapPageState extends State<MapPage> {
       if (int.tryParse(infoMap.data[i].aqi) != null) {
         var marker = Marker(
             icon: BitmapDescriptor.defaultMarkerWithHue(
-                getColorMarker(int.parse(infoMap.data[i].aqi))),
+                getColorAqiMarker(int.parse(infoMap.data[i].aqi))),
             markerId: MarkerId(infoMap.data[i].uid.toString()),
             position: LatLng(infoMap.data[i].lat, infoMap.data[i].lon),
             onTap: () {
@@ -40,23 +41,6 @@ class MapPageState extends State<MapPage> {
       }
     }
     setState(() {});
-  }
-
-  double getColorMarker(int valAqi) {
-    if (valAqi >= 0 && valAqi <= 50) {
-      return BitmapDescriptor.hueGreen;
-    } else if (valAqi > 50 && valAqi <= 100) {
-      return BitmapDescriptor.hueYellow;
-    } else if (valAqi > 100 && valAqi <= 150) {
-      return BitmapDescriptor.hueOrange;
-    } else if (valAqi > 150 && valAqi <= 200) {
-      return BitmapDescriptor.hueRed;
-    } else if (valAqi > 200 && valAqi <= 300) {
-      return BitmapDescriptor.hueMagenta;
-    } else if (valAqi > 300) {
-      return BitmapDescriptor.hueViolet;
-    }
-    return BitmapDescriptor.hueGreen;
   }
 
   void onMapCreated(GoogleMapController controller) {

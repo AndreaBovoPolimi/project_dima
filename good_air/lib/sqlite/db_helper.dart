@@ -31,7 +31,7 @@ class DbHelper {
 
   Future<Database> initializeDb() async {
     var databasesPath = await getDatabasesPath();
-    String path = p.join(databasesPath, 'good_air_sjfr.db');
+    String path = p.join(databasesPath, 'good_air_db.db');
 
     var dbTodos = await openDatabase(path, version: 1, onCreate: _createDb);
     return dbTodos;
@@ -39,10 +39,10 @@ class DbHelper {
 
   void _createDb(Database db, int newVersion) async {
     await db.execute(
-        "CREATE TABLE $tblSearchStory($colId INTEGER PRIMARY KEY, $colAddress TEXT UNIQUE, " +
+        "CREATE TABLE $tblSearchStory($colId INTEGER PRIMARY KEY, $colAddress TEXT, " +
             "$colDate DATETIME)");
     await db.execute(
-        "CREATE TABLE $tblForecast($colId INTEGER PRIMARY KEY, $colAddress TEXT UNIQUE, " +
+        "CREATE TABLE $tblForecast($colId INTEGER PRIMARY KEY, $colAddress TEXT, " +
             "$colLat double, $colLng double)");
   }
 
