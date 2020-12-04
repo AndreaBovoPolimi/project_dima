@@ -3,9 +3,27 @@ import 'package:geolocator/geolocator.dart';
 import 'package:good_air/views/forecast_page.dart';
 import 'package:good_air/views/profile_page.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
 import 'news_page.dart';
 import 'map_page.dart';
+import 'package:workmanager/workmanager.dart';
+import 'package:good_air/notifications/notification.dart' as notif;
+
+const fetchBackground = "fetchBackground";
+
+void callbackDispatcher() {
+  Workmanager.executeTask((task, inputData) async {
+    switch (task) {
+      case fetchBackground:
+        //Geolocator geoLocator = Geolocator()..forceAndroidLocationManager = true;
+        Position userLocation = await Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.high);
+        notif.Notification notification = new notif.Notification();
+        notification.showNotification(userLocation);
+        break;
+    }
+    return Future.value(true);
+  });
+}
 
 class MainPage extends StatefulWidget {
   State<MainPage> createState() {
@@ -16,6 +34,24 @@ class MainPage extends StatefulWidget {
 class MainPageState extends State<MainPage> {
   int _currentTabIndex = 0;
   static var userLocation;
+
+  @override
+  void initState() {
+    super.initState();
+    Workmanager.initialize(
+      callbackDispatcher,
+      isInDebugMode: true,
+    );
+
+    Workmanager.registerPeriodicTask("1", fetchBackground,
+        frequency: Duration(seconds: 15),
+        constraints: Constraints(
+            networkType: NetworkType.connected,
+            requiresBatteryNotLow: false,
+            requiresCharging: false,
+            requiresDeviceIdle: false,
+            requiresStorageNotLow: false));
+  }
 
   Future<void> loadUserPosition() async {
     Position position = await Geolocator.getCurrentPosition();

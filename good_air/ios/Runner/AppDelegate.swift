@@ -9,6 +9,7 @@ import GoogleMaps
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
     var flutter_native_splash = 1
+    UIApplication.shared.setMinimumBackgroundFetchInterval(TimeInterval(60*15))
     UIApplication.shared.isStatusBarHidden = false
 
     GeneratedPluginRegistrant.register(with: self)
