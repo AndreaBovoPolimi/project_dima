@@ -104,7 +104,7 @@ class ForecastPageSecondState extends State<ForecastPageSecond> {
         //subtitle: Text(''),
         trailing: Icon(Icons.arrow_forward_outlined),
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => ForecastSubPage(getColorAqi(infoFeedPosition.data.aqi),infoFeedPosition.data.city.name,infoFeedPosition.data.aqi)));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => ForecastSubPage(infoFeedPosition)));
         },
       );
     }
@@ -142,7 +142,7 @@ class ForecastPageSecondState extends State<ForecastPageSecond> {
         //subtitle: Text('${forecastList[idx].lat}, ${forecastList[idx].lng}'),
         trailing: Icon(Icons.arrow_forward_outlined),
         onTap: () {
-           Navigator.push(context, MaterialPageRoute(builder: (context) => ForecastSubPage(getColorAqi(infoFeedList[idx].data.aqi),forecastList[idx].address,infoFeedList[idx].data.aqi)));
+           Navigator.push(context, MaterialPageRoute(builder: (context) => ForecastSubPage(infoFeedList[idx],forecastEntity: forecastList[idx])));
         },
       );
     }
