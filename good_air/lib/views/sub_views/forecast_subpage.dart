@@ -32,7 +32,7 @@ class ForecastSubPage extends StatelessWidget {
       address = address.substring(0,index);
     var textColor = Colors.white;
     if(color == Colors.yellow)
-      textColor = Colors.black;
+      textColor = Colors.black87;
     return Scaffold(
         body: Stack(
           children: [
