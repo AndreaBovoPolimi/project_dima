@@ -3,6 +3,8 @@ import 'package:good_air/helpers/color_aqi.dart';
 import 'package:good_air/models/info_feed.dart';
 import 'package:good_air/sqlite/entities/forecast.dart';
 import 'package:good_air/views/components/forecast_background.dart';
+import 'package:good_air/views/components/forecast_container.dart';
+import 'package:good_air/views/components/rounded_container.dart';
 
 class ForecastSubPage extends StatelessWidget {
 
@@ -31,28 +33,34 @@ class ForecastSubPage extends StatelessWidget {
     return Scaffold(
         body: Stack(
           children: [
-                ForecastBackground(this.color),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [  
-                  Container( 
-                     margin: EdgeInsets.only(top:50),
-                     child: Text(address.toUpperCase(), 
-                     //maxLines: 1,
-                     style: TextStyle(fontWeight: FontWeight.w600, fontSize: 40, color: Colors.black87, fontStyle: FontStyle.italic)
+                ForecastBackground(Colors.blue[300]),
+                Positioned(
+                  top: size.height * 0.025,
+                  left: size.width * 0.03,
+                  child: Container( 
+                     child: Row( children:[
+                       Icon(Icons.location_on_outlined, color: Colors.white,),
+                       Text(address, 
+                       style: TextStyle(fontWeight: FontWeight.w600, fontSize: 25, color: Colors.white, fontStyle: FontStyle.italic)
+                     )]
                      )
-                  )],
+                  )
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                  Container(
-                      margin: EdgeInsets.only(top: 130),
+                Positioned(
+                  top: size.height * 0.025,
+                  left: size.width * 0.75,
+                  child: Container(
                       child: Text("AQI: " + aqi.toString(), 
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30, color: Colors.black87, fontStyle: FontStyle.italic)
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white, fontStyle: FontStyle.italic)
                       )
-                  ),
-                ])
+                    ),
+                 ),
+                 Positioned(
+                   child: RoundedContainer()
+                 ),
+                 Positioned(
+                   child: ForecastContainer()
+                 ),   
           ]),
     );
   }

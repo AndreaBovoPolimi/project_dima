@@ -12,16 +12,9 @@ class ForecastBackground extends StatelessWidget {
   Widget build(BuildContext context) {
      var size = MediaQuery.of(context).size;
      return Container (
-       height: size.height * 0.3,
+       height: size.height * 0.09,
        width: size.width,
-       child: ClipPath(
-        child: Container(
-          width: size.width,
-          height: 10,
-          color: color,
-        ),
-        clipper: CustomClipPath(),
-       )
+       color:this.color,
      );
   }
 }
@@ -30,12 +23,12 @@ class ForecastBackground extends StatelessWidget {
 class CustomClipPath extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
-      Path path = Path();
-      path.lineTo(0, size.height);
-      path.quadraticBezierTo(size.width/4, size.height - 40, size.width/2, size.height-20);
-      path.quadraticBezierTo(3/4*size.width, size.height, size.width, size.height-30);
-      path.lineTo(size.width, 0);
-      return path;
+    Path path = Path();
+    path.lineTo(0, size.height);
+    path.quadraticBezierTo(size.width/2, size.height - 100, size.width , size.height );
+    path.lineTo(size.width, 0);
+
+    return path;
   }
   
   @override
