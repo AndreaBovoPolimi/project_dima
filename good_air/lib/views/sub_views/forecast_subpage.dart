@@ -44,7 +44,7 @@ class ForecastSubPage extends StatelessWidget {
                      child: Row( children:[
                        Icon(Icons.location_on_outlined, color: textColor,),
                        Text(address, 
-                       style: TextStyle(fontWeight: FontWeight.w600, fontSize: 25, color: textColor, fontStyle: FontStyle.italic)
+                       style: TextStyle(fontWeight: FontWeight.w900, fontSize: 25, color: textColor, fontStyle: FontStyle.italic)
                      )]
                      )
                   )
@@ -54,7 +54,7 @@ class ForecastSubPage extends StatelessWidget {
                   left: size.width * 0.75,
                   child: Container(
                       child: Text("AQI: " + aqi.toString(), 
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: textColor, fontStyle: FontStyle.italic)
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: textColor, fontStyle: FontStyle.normal)
                       )
                     ),
                  ),
