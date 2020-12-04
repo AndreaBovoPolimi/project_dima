@@ -30,18 +30,21 @@ class ForecastSubPage extends StatelessWidget {
     int index = address.indexOf(',');
     if(index != -1)
       address = address.substring(0,index);
+    var textColor = Colors.white;
+    if(color == Colors.yellow)
+      textColor = Colors.black;
     return Scaffold(
         body: Stack(
           children: [
-                ForecastBackground(Colors.blue[300]),
+                ForecastBackground(color), //Colors.blue[300]
                 Positioned(
                   top: size.height * 0.025,
                   left: size.width * 0.03,
                   child: Container( 
                      child: Row( children:[
-                       Icon(Icons.location_on_outlined, color: Colors.white,),
+                       Icon(Icons.location_on_outlined, color: textColor,),
                        Text(address, 
-                       style: TextStyle(fontWeight: FontWeight.w600, fontSize: 25, color: Colors.white, fontStyle: FontStyle.italic)
+                       style: TextStyle(fontWeight: FontWeight.w600, fontSize: 25, color: textColor, fontStyle: FontStyle.italic)
                      )]
                      )
                   )
@@ -51,7 +54,7 @@ class ForecastSubPage extends StatelessWidget {
                   left: size.width * 0.75,
                   child: Container(
                       child: Text("AQI: " + aqi.toString(), 
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white, fontStyle: FontStyle.italic)
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: textColor, fontStyle: FontStyle.italic)
                       )
                     ),
                  ),
