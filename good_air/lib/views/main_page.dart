@@ -44,7 +44,7 @@ class MainPageState extends State<MainPage> {
     );
 
     Workmanager.registerPeriodicTask("1", fetchBackground,
-        frequency: Duration(seconds: 15),
+        frequency: Duration(minutes: 30),
         constraints: Constraints(
             networkType: NetworkType.connected,
             requiresBatteryNotLow: false,
