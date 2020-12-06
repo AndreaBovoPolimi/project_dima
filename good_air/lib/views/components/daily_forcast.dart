@@ -10,16 +10,16 @@ class DailyForecast extends StatelessWidget {
   Pm252 day_pm25;
   Uvi day_uvi;
 
-  DailyForecast(Daily dailym, int index) {
+  DailyForecast(Daily daily, int index) {
       this.daily = daily;
       this.index = index;
-      if(day_o3 != null)
+      if(daily.o3[index]!= null)
         day_o3 = daily.o3[index];
-      if(day_pm10 != null)
+      if(daily.pm10[index] != null)
         day_pm10 = daily.pm10[index];
-      if(day_pm25 != null)
+      if(daily.pm25[index] != null)
         day_pm25 = daily.pm25[index];
-      if(day_uvi != null)
+      if(daily.uvi[index] != null)
         day_uvi = daily.uvi[index];
   }
   @override
@@ -46,7 +46,14 @@ class DailyForecast extends StatelessWidget {
           ),
         ],
       ),
-      child: Text(day_pm25.toString()),
+      child: Column(
+        children: [
+          Text(day_pm25.day),
+          Text("O3: " + "min: " + day_o3.min.toString() + " max: " + day_o3.max.toString() + " avg: " + day_o3.avg.toString()),
+          Text("Pm10: " + "min: " + day_pm10.min.toString() + " max: " + day_pm10.max.toString() + " avg: " + day_pm10.avg.toString()),
+          Text("Pm25: " + "min: " + day_pm25.min.toString() + " max: " + day_pm25.max.toString() + " avg: " + day_pm25.avg.toString()),
+          Text("UVI: " + "min: " + day_uvi.min.toString() + " max: " + day_uvi.max.toString() + " avg: " + day_uvi.avg.toString())
+        ]),
   );
   }
 }
