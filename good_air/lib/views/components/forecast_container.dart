@@ -15,7 +15,7 @@ class ForecastContainer extends StatelessWidget {
      for(int i=0; i<this.infoFeed.data.forecast.daily.pm10.length; i++)
         widgetList.add(DailyForecast(infoFeed.data.forecast.daily,i));
      return PageView(
-       controller: PageController(initialPage: 1),
+       controller: PageController(initialPage: 0),
        children: widgetList,
      );
   }
