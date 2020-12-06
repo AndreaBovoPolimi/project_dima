@@ -236,7 +236,7 @@ class Uvi {
 
 @JsonSerializable()
 class Daily {
-  List<O3> o3;
+  List<O3Forecast> o3;
   List<Pm102> pm10;
   List<Pm252> pm25;
   List<Uvi> uvi;

@@ -295,7 +295,8 @@ Map<String, dynamic> _$UviToJson(Uvi instance) => <String, dynamic>{
 Daily _$DailyFromJson(Map<String, dynamic> json) {
   return Daily()
     ..o3 = (json['o3'] as List)
-        ?.map((e) => e == null ? null : O3.fromJson(e as Map<String, dynamic>))
+        ?.map((e) =>
+            e == null ? null : O3Forecast.fromJson(e as Map<String, dynamic>))
         ?.toList()
     ..pm10 = (json['pm10'] as List)
         ?.map(

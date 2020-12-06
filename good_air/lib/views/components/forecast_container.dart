@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:good_air/models/info_feed.dart';
 
 class ForecastContainer extends StatelessWidget {
 
+  InfoFeed infoFeed;
+  ForecastContainer(InfoFeed infoFeed) {
+      this.infoFeed = infoFeed;
+      for (var v in infoFeed.data.forecast.daily.o3)
+        print(v.day);
+        
+  }
   @override
   Widget build(BuildContext context) {
      var size = MediaQuery.of(context).size;

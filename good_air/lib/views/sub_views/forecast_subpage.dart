@@ -62,7 +62,7 @@ class ForecastSubPage extends StatelessWidget {
                    child: RoundedContainer()
                  ),
                  Positioned(
-                   child: ForecastContainer()
+                   child: ForecastContainer(infoFeedPosition)
                  ),   
           ]),
     );
