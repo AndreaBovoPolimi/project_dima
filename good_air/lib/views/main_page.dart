@@ -12,15 +12,11 @@ const fetchBackground = "fetchBackground";
 
 void callbackDispatcher() {
   Workmanager.executeTask((task, inputData) async {
-    switch (task) {
-      case fetchBackground:
-        //Geolocator geoLocator = Geolocator()..forceAndroidLocationManager = true;
-        Position userLocation = await Geolocator.getCurrentPosition(
-            desiredAccuracy: LocationAccuracy.high);
-        notif.Notification notification = new notif.Notification();
-        notification.showNotification(userLocation);
-        break;
-    }
+    //Geolocator geoLocator = Geolocator()..forceAndroidLocationManager = true;
+    Position userLocation = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    notif.Notification notification = new notif.Notification();
+    notification.showNotification(userLocation);
     return Future.value(true);
   });
 }

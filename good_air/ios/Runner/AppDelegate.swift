@@ -1,6 +1,7 @@
 import UIKit
 import Flutter
 import GoogleMaps
+import workmanager
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
@@ -9,7 +10,8 @@ import GoogleMaps
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
     var flutter_native_splash = 1
-    UIApplication.shared.setMinimumBackgroundFetchInterval(TimeInterval(60*15))
+    UIApplication.shared.setMinimumBackgroundFetchInterval(TimeInterval(60*30))
+    WorkmanagerPlugin.register(with: self.registrar(forPlugin: "be.tramckrijte.workmanager.WorkmanagerPlugin")!)
     UIApplication.shared.isStatusBarHidden = false
 
     GeneratedPluginRegistrant.register(with: self)

@@ -652,7 +652,7 @@ packages:
       name: workmanager
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.3"
+    version: "0.1.5"
   xml:
     dependency: transitive
     description:
