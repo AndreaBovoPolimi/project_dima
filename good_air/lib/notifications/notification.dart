@@ -1,11 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:geolocator/geolocator.dart';
 
 class Notification {
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
-  Future showNotification(Position position) async {
-    print(position.toString());
+  Future showNotificationChangeAir(String message) async {
+    var rng = new Random();
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
         '1', 'location-bg', 'fetch location in background',
         playSound: true, importance: Importance.Max, priority: Priority.High);
@@ -14,9 +15,9 @@ class Notification {
     var platformChannelSpecifics = new NotificationDetails(
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.show(
-      0,
-      'Location fetched good_air',
-      position.latitude.toString(),
+      rng.nextInt(1000),
+      'Air Quality',
+      message,
       platformChannelSpecifics,
       payload: '',
     );

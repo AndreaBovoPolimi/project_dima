@@ -1,9 +1,9 @@
 class SearchStoryEntity {
   int _id;
   String _address;
-  String _date;
+  int _date;
 
-  SearchStoryEntity(String _address, String _date) {
+  SearchStoryEntity(String _address, int _date) {
     this._address = _address;
     this._date = _date;
   }
@@ -11,17 +11,11 @@ class SearchStoryEntity {
   SearchStoryEntity.withId(this._id, this._address, this._date);
   int get id => _id;
   String get address => _address;
-  String get date => _date;
+  int get date => _date;
 
   set address(String newAddress) {
     if (newAddress.length <= 255) {
       _address = newAddress;
-    }
-  }
-
-  set date(String newDate) {
-    if (newDate.length <= 255) {
-      _date = newDate;
     }
   }
 

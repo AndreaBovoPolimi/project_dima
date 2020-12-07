@@ -75,7 +75,7 @@ class MapPageState extends State<MapPage> {
 
   Future changeAddressState() async {
     mapController.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(target: center, zoom: 8.0)));
+        CameraPosition(target: center, zoom: 9.0)));
     markers.clear();
     var marker = Marker(
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
@@ -103,7 +103,7 @@ class MapPageState extends State<MapPage> {
         child: Stack(children: [
       GoogleMap(
         onMapCreated: onMapCreated,
-        minMaxZoomPreference: MinMaxZoomPreference(7, 18),
+        minMaxZoomPreference: MinMaxZoomPreference(8.5, 18),
         mapToolbarEnabled: false,
         markers: markers,
         initialCameraPosition: CameraPosition(

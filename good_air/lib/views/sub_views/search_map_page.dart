@@ -132,7 +132,7 @@ class SearchMapPageState extends State<SearchMapPage> {
       helper.deleteSearchStory(searchStories.last.id);
     }
     helper.insertSearchStory(
-        SearchStoryEntity(address, DateTime.now().toString()));
+        SearchStoryEntity(address, DateTime.now().millisecondsSinceEpoch));
   }
 
   void getData() {

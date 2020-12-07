@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:good_air/helpers/update_info_position.dart';
 import 'package:good_air/views/forecast_page.dart';
 import 'package:good_air/views/profile_page.dart';
+import 'package:good_air/views/ranking_page.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'news_page.dart';
 import 'map_page.dart';
 import 'package:workmanager/workmanager.dart';
-import 'package:good_air/notifications/notification.dart' as notif;
 
 const fetchBackground = "fetchBackground";
 
 void callbackDispatcher() {
   Workmanager.executeTask((task, inputData) async {
-    //Geolocator geoLocator = Geolocator()..forceAndroidLocationManager = true;
-    Position userLocation = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-    notif.Notification notification = new notif.Notification();
-    notification.showNotification(userLocation);
+    //WidgetsFlutterBinding.ensureInitialized();
+    await updateInfoPosition();
     return Future.value(true);
   });
 }
@@ -29,6 +28,8 @@ class MainPage extends StatefulWidget {
 
 class MainPageState extends State<MainPage> {
   int _currentTabIndex = 0;
+  bool myLocaleIsNull = true;
+  Address addressPosition;
   static var userLocation;
 
   @override
@@ -52,6 +53,12 @@ class MainPageState extends State<MainPage> {
   Future<void> loadUserPosition() async {
     Position position = await Geolocator.getCurrentPosition();
     userLocation = LatLng(position.latitude, position.longitude);
+    var addresses = await Geocoder.local.findAddressesFromCoordinates(
+        Coordinates(position.latitude, position.longitude));
+    addressPosition = addresses.first;
+    setState(() {
+      myLocaleIsNull = false;
+    });
   }
 
   MainPageState() {
@@ -62,6 +69,7 @@ class MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     final _kTabPages = <Widget>[
       NewsPage(key: PageStorageKey('News')),
+      RankingPage(key: PageStorageKey('Ranking')),
       MapPage(key: PageStorageKey('Map')),
       ForecastPage(key: PageStorageKey('Forecast')),
       ProfilePage(key: PageStorageKey('Profile')),
@@ -70,6 +78,9 @@ class MainPageState extends State<MainPage> {
     final _kBottomNavBarItems = <BottomNavigationBarItem>[
       BottomNavigationBarItem(
           icon: Icon(Icons.format_align_left_outlined), label: 'News'),
+      BottomNavigationBarItem(
+          icon: Icon(Icons.grade_outlined),
+          label: myLocaleIsNull ? 'Ranking' : addressPosition.countryName),
       BottomNavigationBarItem(
           icon: Icon(Icons.outlined_flag_outlined), label: 'Maps'),
       BottomNavigationBarItem(
@@ -92,6 +103,7 @@ class MainPageState extends State<MainPage> {
     return Scaffold(
       appBar: AppBar(
         brightness: Brightness.light,
+        elevation: 0.0,
         title: Row(children: [
           Text('Air', style: TextStyle(color: Colors.blueGrey)),
           Text(
