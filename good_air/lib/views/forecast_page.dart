@@ -85,65 +85,92 @@ class ForecastPageSecondState extends State<ForecastPageSecond> {
       return ForecastPage();
     }*/
     Widget _buildRowOnLocation() {
-      return ListTile(
-        leading: CircleAvatar(
-          child: Text('${infoFeedPosition.data.aqi}'),
-          backgroundColor: getColorAqi(infoFeedPosition.data.aqi),
-        ),
-        title: Row(children: [
-          Text(
-            'Your position',
-            style: TextStyle(fontSize: 17.0),
-          ),
-          Icon(
-            Icons.location_on_outlined,
-            color: getColorAqi(infoFeedPosition.data.aqi),
-          )
-        ]),
-        //subtitle: Text(''),
-        trailing: Icon(Icons.arrow_forward_outlined),
-        /*onTap: () {
-          Navigator.push(context, route);
-        },*/
-      );
-    }
-
-    Widget _buildRowOnUpdate() {
-      return Opacity(
-          opacity: 0.5,
+      return Card(
+          color: Colors.white,
+          elevation: 2.0,
           child: ListTile(
             leading: CircleAvatar(
-              child: Text('?'),
-              backgroundColor: Colors.blue,
+              child: Image(
+                image: ExactAssetImage(
+                  'resources/good_air.png',
+                ),
+                width: 32,
+                height: 32,
+              ),
+              backgroundColor: getColorAqi(infoFeedPosition.data.aqi),
             ),
-            title: Text(
-              '${forecastList[forecastList.length - 1].address}',
-              style: TextStyle(fontSize: 17.0),
-            ),
+            title: Row(children: [
+              Text(
+                'Your position (${infoFeedPosition.data.aqi})',
+                style: TextStyle(fontSize: 17.0),
+              ),
+              Icon(
+                Icons.location_on_outlined,
+                color: getColorAqi(infoFeedPosition.data.aqi),
+              )
+            ]),
             //subtitle: Text(''),
-            trailing: CircularProgressIndicator(),
+            trailing: Icon(Icons.arrow_forward_outlined),
             /*onTap: () {
           Navigator.push(context, route);
         },*/
           ));
     }
 
-    Widget _buildRow(int idx) {
-      return ListTile(
-        leading: CircleAvatar(
-          child: Text('${infoFeedList[idx].data.aqi}'),
-          backgroundColor: getColorAqi(infoFeedList[idx].data.aqi),
-        ),
-        title: Text(
-          '${forecastList[idx].address}',
-          style: TextStyle(fontSize: 17.0),
-        ),
-        //subtitle: Text('${forecastList[idx].lat}, ${forecastList[idx].lng}'),
-        trailing: Icon(Icons.arrow_forward_outlined),
-        /*onTap: () {
+    Widget _buildRowOnUpdate() {
+      return Opacity(
+          opacity: 0.5,
+          child: Card(
+              color: Colors.white,
+              elevation: 2.0,
+              child: ListTile(
+                leading: CircleAvatar(
+                  child: Image(
+                    image: ExactAssetImage(
+                      'resources/good_air.png',
+                    ),
+                    width: 32,
+                    height: 32,
+                  ),
+                  backgroundColor: Colors.blue,
+                ),
+                title: Text(
+                  '${forecastList[forecastList.length - 1].address}',
+                  style: TextStyle(fontSize: 17.0),
+                ),
+                //subtitle: Text(''),
+                trailing: CircularProgressIndicator(),
+                /*onTap: () {
           Navigator.push(context, route);
         },*/
-      );
+              )));
+    }
+
+    Widget _buildRow(int idx) {
+      return Card(
+          color: Colors.white,
+          elevation: 2.0,
+          child: ListTile(
+            leading: CircleAvatar(
+              child: Image(
+                image: ExactAssetImage(
+                  'resources/good_air.png',
+                ),
+                width: 32,
+                height: 32,
+              ),
+              backgroundColor: getColorAqi(infoFeedList[idx].data.aqi),
+            ),
+            title: Text(
+              '${forecastList[idx].address} (${infoFeedList[idx].data.aqi})',
+              style: TextStyle(fontSize: 17.0),
+            ),
+            //subtitle: Text('${forecastList[idx].lat}, ${forecastList[idx].lng}'),
+            trailing: Icon(Icons.arrow_forward_outlined),
+            /*onTap: () {
+          Navigator.push(context, route);
+        },*/
+          ));
     }
 
     return Stack(children: [
@@ -153,7 +180,12 @@ class ForecastPageSecondState extends State<ForecastPageSecond> {
               //width: MediaQuery.of(context).size.width,
               child: ListView.builder(
                   itemCount: forecastList.length + 1,
-                  padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
+                  padding: const EdgeInsets.only(
+                    left: 5.0,
+                    right: 5.0,
+                    bottom: 5.0,
+                    top: 5.0,
+                  ),
                   itemBuilder: (BuildContext context, int i) {
                     if (i == 0) {
                       return _buildRowOnLocation();

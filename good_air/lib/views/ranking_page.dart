@@ -52,29 +52,44 @@ class RankingSecondPageState extends State<RankingSecondPage> {
 
   Widget build(BuildContext context) {
     Widget _buildRow(Cities idx) {
-      return ListTile(
-        leading: CircleAvatar(
-          child: Text('${idx.station.a}'),
-          backgroundColor: getColorAqi(int.tryParse(idx.station.a)),
-        ),
-        title: Text(
-          '${idx.city}',
-          style: TextStyle(fontSize: 17.0),
-        ),
-        trailing: Icon(Icons.add_to_home_screen_outlined),
-        /*onTap: () {
+      return Card(
+          color: Colors.white,
+          elevation: 2.0,
+          child: ListTile(
+            leading: CircleAvatar(
+              child: Image(
+                image: ExactAssetImage(
+                  'resources/good_air.png',
+                ),
+                width: 32,
+                height: 32,
+              ),
+              backgroundColor: getColorAqi(int.tryParse(idx.station.a)),
+            ),
+            title: Text(
+              '${idx.city} (${idx.station.a})',
+              style: TextStyle(fontSize: 17.0),
+            ),
+            subtitle: Text('${idx.station.u}'),
+            trailing: Icon(Icons.add_to_home_screen_outlined),
+            /*onTap: () {
            Navigator.push(context, route);
          },*/
-      );
+          ));
     }
 
     return ListView.builder(
-        itemCount: infoRanking.cities.length * 2,
-        padding: const EdgeInsets.all(16.0),
+        itemCount: infoRanking.cities.length,
+        padding: const EdgeInsets.only(
+          left: 5.0,
+          right: 5.0,
+          bottom: 5.0,
+          top: 5.0,
+        ),
         itemBuilder: (BuildContext context, int i) {
-          if (i.isOdd) return Divider();
-          int index = i ~/ 2;
-          return _buildRow(infoRanking.cities[index]);
+          //if (i.isOdd) return Divider();
+          //int index = i ~/ 2;
+          return _buildRow(infoRanking.cities[i]);
         });
   }
 }

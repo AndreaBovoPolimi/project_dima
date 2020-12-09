@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:good_air/sqlite/db_helper.dart';
 import 'package:good_air/sqlite/entities/info_feed_story.dart';
 import 'package:good_air/views/sub_views/graph_page.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:good_air/views/sub_views/settings_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key key}) : super(key: key);
@@ -69,15 +69,31 @@ class ProfilePageState extends State<ProfilePage>
       Tab(text: '30 days'),
       Tab(text: 'All'),
     ]);
-    return Scaffold(
-        appBar: AppBar(
-            backgroundColor: Colors.white,
-            shadowColor: Colors.white10,
-            elevation: 0.0,
-            flexibleSpace: SafeArea(
-              child: _kTabs,
-            )),
-        body: _kTabPages);
+    return Flexible(
+        child: Stack(children: [
+      Scaffold(
+          appBar: AppBar(
+              backgroundColor: Colors.white,
+              shadowColor: Colors.white10,
+              elevation: 0.0,
+              flexibleSpace: SafeArea(
+                child: _kTabs,
+              )),
+          body: _kTabPages),
+      Positioned(
+          bottom: 10,
+          right: 10,
+          child: FloatingActionButton(
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SettingsPage()));
+            },
+            child: Icon(
+              Icons.settings,
+            ),
+            heroTag: "settings",
+          ))
+    ]));
   }
 
   void getData() {

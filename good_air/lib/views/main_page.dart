@@ -9,6 +9,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'news_page.dart';
 import 'map_page.dart';
 import 'package:workmanager/workmanager.dart';
+import 'dart:io' show Platform;
 
 const fetchBackground = "fetchBackground";
 
@@ -35,19 +36,24 @@ class MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    Workmanager.initialize(
-      callbackDispatcher,
-      isInDebugMode: true,
-    );
+    if (Platform.isIOS) {
+      updateInfoPosition();
+    }
+    if (Platform.isAndroid) {
+      Workmanager.initialize(
+        callbackDispatcher,
+        isInDebugMode: true,
+      );
 
-    Workmanager.registerPeriodicTask("1", fetchBackground,
-        frequency: Duration(minutes: 30),
-        constraints: Constraints(
-            networkType: NetworkType.connected,
-            requiresBatteryNotLow: false,
-            requiresCharging: false,
-            requiresDeviceIdle: false,
-            requiresStorageNotLow: false));
+      Workmanager.registerPeriodicTask("1", fetchBackground,
+          frequency: Duration(minutes: 30),
+          constraints: Constraints(
+              networkType: NetworkType.connected,
+              requiresBatteryNotLow: false,
+              requiresCharging: false,
+              requiresDeviceIdle: false,
+              requiresStorageNotLow: false));
+    }
   }
 
   Future<void> loadUserPosition() async {
@@ -77,16 +83,27 @@ class MainPageState extends State<MainPage> {
 
     final _kBottomNavBarItems = <BottomNavigationBarItem>[
       BottomNavigationBarItem(
-          icon: Icon(Icons.format_align_left_outlined), label: 'News'),
+          icon: Icon(_currentTabIndex == 0
+              ? Icons.format_align_left
+              : Icons.format_align_left_outlined),
+          label: 'News'),
       BottomNavigationBarItem(
-          icon: Icon(Icons.grade_outlined),
+          icon:
+              Icon(_currentTabIndex == 1 ? Icons.grade : Icons.grade_outlined),
           label: myLocaleIsNull ? 'Ranking' : addressPosition.countryName),
       BottomNavigationBarItem(
-          icon: Icon(Icons.outlined_flag_outlined), label: 'Maps'),
+          icon: Icon(_currentTabIndex == 2 ? Icons.map : Icons.map_outlined),
+          label: 'Maps'),
       BottomNavigationBarItem(
-          icon: Icon(Icons.wallpaper_outlined), label: 'Forecast'),
+          icon: Icon(_currentTabIndex == 3
+              ? Icons.wallpaper
+              : Icons.wallpaper_outlined),
+          label: 'Forecast'),
       BottomNavigationBarItem(
-          icon: Icon(Icons.account_circle_outlined), label: 'Profile'),
+          icon: Icon(_currentTabIndex == 4
+              ? Icons.account_circle
+              : Icons.account_circle_outlined),
+          label: 'Profile'),
     ];
 
     assert(_kTabPages.length == _kBottomNavBarItems.length);

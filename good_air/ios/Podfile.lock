@@ -17,12 +17,14 @@ PODS:
   - GoogleMaps/Base (3.9.0)
   - GoogleMaps/Maps (3.9.0):
     - GoogleMaps/Base
+  - share (0.0.1):
+    - Flutter
+  - shared_preferences (0.0.1):
+    - Flutter
   - sqflite (0.0.2):
     - Flutter
     - FMDB (>= 2.7.5)
   - webview_flutter (0.0.1):
-    - Flutter
-  - workmanager (0.0.1):
     - Flutter
 
 DEPENDENCIES:
@@ -31,9 +33,10 @@ DEPENDENCIES:
   - geocoder (from `.symlinks/plugins/geocoder/ios`)
   - geolocator (from `.symlinks/plugins/geolocator/ios`)
   - google_maps_flutter (from `.symlinks/plugins/google_maps_flutter/ios`)
+  - share (from `.symlinks/plugins/share/ios`)
+  - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - webview_flutter (from `.symlinks/plugins/webview_flutter/ios`)
-  - workmanager (from `.symlinks/plugins/workmanager/ios`)
 
 SPEC REPOS:
   trunk:
@@ -51,12 +54,14 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/geolocator/ios"
   google_maps_flutter:
     :path: ".symlinks/plugins/google_maps_flutter/ios"
+  share:
+    :path: ".symlinks/plugins/share/ios"
+  shared_preferences:
+    :path: ".symlinks/plugins/shared_preferences/ios"
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
   webview_flutter:
     :path: ".symlinks/plugins/webview_flutter/ios"
-  workmanager:
-    :path: ".symlinks/plugins/workmanager/ios"
 
 SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
@@ -66,9 +71,10 @@ SPEC CHECKSUMS:
   geolocator: 1ae40084cc6c1586ce5ad12cfc3fd38c64d05f2f
   google_maps_flutter: c7f9c73576de1fbe152a227bfd6e6c4ae8088619
   GoogleMaps: 4b5346bddfe6911bb89155d43c903020170523ac
+  share: 0b2c3e82132f5888bccca3351c504d0003b3b410
+  shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
   webview_flutter: d2b4d6c66968ad042ad94cbb791f5b72b4678a96
-  workmanager: ffff78bf18495e2bc5b8c955ead94a81db340681
 
 PODFILE CHECKSUM: 6da9d5a4154d17b693c9a58961ad090300ad41c9
 

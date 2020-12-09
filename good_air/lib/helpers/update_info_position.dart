@@ -10,7 +10,7 @@ Future updateInfoPosition() async {
 
   Position userLocation = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high);
-  var lastInfoFeed = await helper.getLastInfoFeedStory();
+  //var lastInfoFeed = await helper.getLastInfoFeedStory();
   var infoFeed =
       await getInfoFeed(userLocation.latitude, userLocation.longitude);
   await helper.insertInfoFeedStory(InfoFeedStoryEntity(

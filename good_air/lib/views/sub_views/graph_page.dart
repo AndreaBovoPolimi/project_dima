@@ -25,11 +25,11 @@ class GraphPageState extends State<GraphPage> {
   Widget build(BuildContext context) {
     return SfCircularChart(
       //tooltipBehavior: TooltipBehavior(enable: true),
-      legend: Legend(
+      /*legend: Legend(
           isVisible: true,
           isResponsive: true,
           overflowMode: LegendItemOverflowMode.wrap,
-          title: LegendTitle(text: 'Legend', alignment: ChartAlignment.center)),
+          title: LegendTitle(text: 'Legend', alignment: ChartAlignment.center)),*/
       series: _getLegendDefaultSeries(),
     );
   }
