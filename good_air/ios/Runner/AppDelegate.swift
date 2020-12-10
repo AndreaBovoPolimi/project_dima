@@ -1,6 +1,7 @@
 import UIKit
 import Flutter
 import GoogleMaps
+import Firebase
 //import workmanager
 
 @UIApplicationMain
@@ -12,6 +13,7 @@ import GoogleMaps
     var flutter_native_splash = 1
     //UIApplication.shared.setMinimumBackgroundFetchInterval(TimeInterval(60*60))
     //WorkmanagerPlugin.register(with: self.registrar(forPlugin: "be.tramckrijte.workmanager.WorkmanagerPlugin")!)
+    FirebaseApp.configure()
     UIApplication.shared.isStatusBarHidden = false
 
     GeneratedPluginRegistrant.register(with: self)

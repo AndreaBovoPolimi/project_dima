@@ -1,6 +1,8 @@
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:good_air/helpers/google_ads.dart';
 import 'package:good_air/helpers/update_info_position.dart';
 import 'package:good_air/views/forecast_page.dart';
 import 'package:good_air/views/profile_page.dart';
@@ -9,7 +11,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'news_page.dart';
 import 'map_page.dart';
 import 'package:workmanager/workmanager.dart';
-import 'dart:io' show Platform;
+import 'dart:io' show Platform, sleep;
 
 const fetchBackground = "fetchBackground";
 
@@ -31,11 +33,26 @@ class MainPageState extends State<MainPage> {
   int _currentTabIndex = 0;
   bool myLocaleIsNull = true;
   Address addressPosition;
+  InterstitialAd _interstitialAd;
+
+  void _loadInterstitialAd() {
+    _interstitialAd
+      ..load()
+      ..show();
+  }
+
   static var userLocation;
 
   @override
   void initState() {
     super.initState();
+    FirebaseAdMob.instance.initialize(appId: FirebaseAdMob.testAppId);
+    _interstitialAd = InterstitialAd(
+      adUnitId: InterstitialAd.testAdUnitId,
+    );
+
+    _loadInterstitialAd();
+
     if (Platform.isIOS) {
       updateInfoPosition();
     }
@@ -54,6 +71,12 @@ class MainPageState extends State<MainPage> {
               requiresDeviceIdle: false,
               requiresStorageNotLow: false));
     }
+  }
+
+  @override
+  void dispose() {
+    _interstitialAd?.dispose();
+    super.dispose();
   }
 
   Future<void> loadUserPosition() async {
