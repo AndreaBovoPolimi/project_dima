@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "825134280801",
+    "project_id": "goodair",
+    "storage_bucket": "goodair.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:825134280801:android:1b44b11a6ce152945efa20",
+        "android_client_info": {
+          "package_name": "com.example.good_air"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "825134280801-td08vtkutgkkipg47vsaq4mvcu2km36s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwVT9wrjf6vaF7Ulskc0bvPWxdcnp_x3I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "825134280801-td08vtkutgkkipg47vsaq4mvcu2km36s.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "825134280801-3enmjtd1kvljqjemahnc3r6j9bme1mmv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.flutter.GoodAir"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
